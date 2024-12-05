@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Hava Durumu</h1>
+        
+        <div class="search">
+            <input type="text" id="city" placeholder="Şehir adını girin...">
+            <button onclick="getWeather()">Ara</button>
+        </div>
+        <div class="weather-info" id="weatherInfo">
+            
+            <p>Sıcaklık: <span id="temperature">-</span> °C</p>
+            <p>Durum: <span id="condition">-</span></p>
+            <img id="weatherIcon" src="" alt="">
+        </div>
+    </div>
+
+    <script>
+        async function getWeather() {
+            const city = document.getElementById("city").value;
+  if (!city) {
+    alert("Lütfen bir şehir adı girin!");
+    return;
+  }
+  try {
+    const response = await fetch(`http://localhost:3003/Weather/${city}`); 
+    if (response.ok) {
+      const data = await response.json();
+      document.getElementById("city").textContent = data.city;
+      document.getElementById("temperature").textContent = data.temperature;
+      document.getElementById("condition").textContent = data.condition;
+      document.getElementById('weatherIcon').src = data.icon; 
+      
+    } else {
+      alert("Hava durumu bilgisi alınamadı!");
+    }
+  } catch (error) {
+    alert("Bir hata oluştu: " + error.message);
+  }
+        }
+    </script>
+</body>
+</html>
